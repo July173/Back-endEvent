@@ -31,8 +31,8 @@ public class BuyoutController {
     @PostMapping("/")
     public ResponseEntity<Object> create(@RequestBody buyout b) {
         try {
-            buyoutService.save(b);
-            responseDTO resp = new responseDTO("ok", "buyout creado con éxito");
+            buyoutService.create(b);
+            responseDTO resp = new responseDTO("ok", "compra registrada con éxito");
             return new ResponseEntity<>(resp, HttpStatus.OK);
         } catch (IllegalArgumentException ex) {
             responseDTO resp = new responseDTO("error", ex.getMessage());

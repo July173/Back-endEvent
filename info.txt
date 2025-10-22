@@ -189,3 +189,24 @@ Devuelve EventDetailDTO con event, tickets, artists.
 Actualizar evento: PUT /api/v1/event/{id}
 Body: EventCreateDTO (mismas validaciones que create)
 Cambiar estado:  PATCH /api/v1/event/{id}/status?status=1|0
+
+
+crear metodo de pago 
+{
+  "type": "TARJETA",
+  "description": "Pago con tarjeta crédito"
+}
+
+crear compra:
+
+endpoint de compra de boleta
+http://localhost:8081/api/v1/buyout/
+
+lo que le pide :
+{
+  "ticket_number": 10,
+  "state_pay": 1,
+  "payMethod": { "id_pay_method": 1 },
+  "user": { "id_user": 1 },
+  "ticket": { "id_ticket": 1 }
+}
