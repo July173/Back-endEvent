@@ -41,3 +41,29 @@ locatedevent:
   "description": "ES VIP ",
   "code": "RK"
 }
+
+
+event
+
+{
+  "event": {
+    "name": "Feria de Música",
+    "description": "Edición 2025",
+    "code": 1234,
+    "status": 1,
+    "schedule": "10:00-22:00",
+    "date_start": "2025-11-01T00:00:00Z",
+    "date_end": "2025-11-02T00:00:00Z",
+    "municipio": { "id_municipio": 1 }
+  },
+  "tickets": [
+    {
+      "value": 50000,
+      "count": 200,
+      "locatedEvent": { "id_located_event": 1 }
+    }
+  ],
+  "artistIds": [1]
+}
+
+http://localhost:8081/api/v1/event/
