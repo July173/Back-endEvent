@@ -53,13 +53,40 @@ public class eventService {
 
     @Transactional
     public event createEvent(EventCreateDTO dto) {
-        // Ensure municipio is a managed reference
+        // Validate existence
         event incoming = dto.getEvent();
-        if (incoming.getMunicipio() != null) {
-            int munId = incoming.getMunicipio().getId_municipio();
-            municipio munRef = municipioRepository.getReferenceById(munId);
-            incoming.setMunicipio(munRef);
+        if (incoming.getMunicipio() == null) {
+            throw new IllegalArgumentException("municipio es obligatorio");
         }
+        int munId = incoming.getMunicipio().getId_municipio();
+        if (!municipioRepository.existsById(munId)) {
+            throw new IllegalArgumentException("municipio no encontrado: id=" + munId);
+        }
+        municipio munRef = municipioRepository.getReferenceById(munId);
+        incoming.setMunicipio(munRef);
+
+        // Validate tickets locatedEvent
+        if (dto.getTickets() != null) {
+            for (ticket t : dto.getTickets()) {
+                if (t.getLocatedEvent() == null) {
+                    throw new IllegalArgumentException("ticket.locatedEvent es obligatorio");
+                }
+                int locId = t.getLocatedEvent().getId_located_event();
+                if (!locatedEventRepository.existsById(locId)) {
+                    throw new IllegalArgumentException("locatedEvent no encontrado: id=" + locId);
+                }
+            }
+        }
+
+        // Validate artistIds
+        if (dto.getArtistIds() != null) {
+            for (Integer artistId : dto.getArtistIds()) {
+                if (artistId == null || !artistRepository.existsById(artistId)) {
+                    throw new IllegalArgumentException("artist no encontrado: id=" + artistId);
+                }
+            }
+        }
+
         event savedEvent = eventRepository.save(incoming);
         for (ticket t : dto.getTickets()) {
             if (t.getLocatedEvent() != null) {
@@ -128,25 +155,50 @@ public class eventService {
         }
         event incoming = dto.getEvent();
         incoming.setId_event(id);
-        if (incoming.getMunicipio() != null) {
-            int munId = incoming.getMunicipio().getId_municipio();
-            municipio munRef = municipioRepository.getReferenceById(munId);
-            incoming.setMunicipio(munRef);
+        if (incoming.getMunicipio() == null) {
+            throw new IllegalArgumentException("municipio es obligatorio");
         }
+        int munId = incoming.getMunicipio().getId_municipio();
+        if (!municipioRepository.existsById(munId)) {
+            throw new IllegalArgumentException("municipio no encontrado: id=" + munId);
+        }
+        municipio munRef = municipioRepository.getReferenceById(munId);
+        incoming.setMunicipio(munRef);
+
         event saved = eventRepository.save(incoming);
 
         artistEventRepository.deleteByEventId(id);
         ticketRepository.deleteByEventId(id);
 
-        for (ticket t : dto.getTickets()) {
-            if (t.getLocatedEvent() != null) {
+        // Validate tickets locatedEvent
+        if (dto.getTickets() != null) {
+            for (ticket t : dto.getTickets()) {
+                if (t.getLocatedEvent() == null) {
+                    throw new IllegalArgumentException("ticket.locatedEvent es obligatorio");
+                }
                 int locId = t.getLocatedEvent().getId_located_event();
-                locatedEvent locRef = locatedEventRepository.getReferenceById(locId);
-                t.setLocatedEvent(locRef);
+                if (!locatedEventRepository.existsById(locId)) {
+                    throw new IllegalArgumentException("locatedEvent no encontrado: id=" + locId);
+                }
             }
+        }
+
+        for (ticket t : dto.getTickets()) {
+            int locId = t.getLocatedEvent().getId_located_event();
+            locatedEvent locRef = locatedEventRepository.getReferenceById(locId);
+            t.setLocatedEvent(locRef);
             t.setEvent(saved);
             ticketRepository.save(t);
         }
+        // Validate artistIds
+        if (dto.getArtistIds() != null) {
+            for (Integer artistId : dto.getArtistIds()) {
+                if (artistId == null || !artistRepository.existsById(artistId)) {
+                    throw new IllegalArgumentException("artist no encontrado: id=" + artistId);
+                }
+            }
+        }
+
         for (Integer artistId : dto.getArtistIds()) {
             artist artist = artistRepository.findById(artistId).orElse(null);
             if (artist != null) {

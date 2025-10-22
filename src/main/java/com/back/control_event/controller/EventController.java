@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.back.control_event.dto.EventCreateDTO;
 import com.back.control_event.dto.EventDetailDTO;
+import com.back.control_event.dto.responseDTO;
 import com.back.control_event.model.event;
 import com.back.control_event.service.eventService;
 
@@ -32,8 +33,17 @@ public class EventController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> createEvent(@RequestBody EventCreateDTO dto) {
-        event result = eventService.createEvent(dto);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        try {
+            event created = eventService.createEvent(dto);
+            EventDetailDTO detail = eventService.getEventDetail(created.getId_event());
+            return new ResponseEntity<>(detail, HttpStatus.OK);
+        } catch (IllegalArgumentException ex) {
+            responseDTO resp = new responseDTO("error", ex.getMessage());
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        } catch (Exception ex) {
+            responseDTO resp = new responseDTO("error", "Error interno al crear el evento");
+            return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/")
@@ -62,8 +72,21 @@ public class EventController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateEvent(@PathVariable int id, @RequestBody EventCreateDTO dto) {
-        event result = eventService.updateEvent(dto, id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        try {
+            event result = eventService.updateEvent(dto, id);
+            if (result == null) {
+                responseDTO resp = new responseDTO("error", "event no encontrado: id=" + id);
+                return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+            }
+            EventDetailDTO detail = eventService.getEventDetail(result.getId_event());
+            return new ResponseEntity<>(detail, HttpStatus.OK);
+        } catch (IllegalArgumentException ex) {
+            responseDTO resp = new responseDTO("error", ex.getMessage());
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        } catch (Exception ex) {
+            responseDTO resp = new responseDTO("error", "Error interno al actualizar el evento");
+            return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PatchMapping("/{id}/status")
