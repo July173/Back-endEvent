@@ -160,3 +160,32 @@ recibe:
     "type_identification": "CC"
   }
 }
+
+filtros de eventos 
+Ejemplos de uso (Query params)
+Búsqueda textual (prioritaria)
+GET /api/v1/event/?filter=feria
+Por municipio
+GET /api/v1/event/?municipioId=1
+Por departamento
+GET /api/v1/event/?departmentId=2
+Por rango de fechas
+GET /api/v1/event/?startDate=2025-11-01&endDate=2025-11-30
+Si no hay ningún filtro → retorna todos los eventos.
+
+enpoints de event
+Otros endpoints relevantes
+Crear evento: POST /api/v1/event/create
+Body: EventCreateDTO con:
+event (objeto event con 
+municipio
+ requerido)
+tickets (lista de ticket con locatedEvent requerido por cada ticket)
+artistIds (lista de ids; se valida conflicto de agenda)
+
+Detalle por id: GET /api/v1/event/{id}/detail
+Devuelve EventDetailDTO con event, tickets, artists.
+
+Actualizar evento: PUT /api/v1/event/{id}
+Body: EventCreateDTO (mismas validaciones que create)
+Cambiar estado: 
