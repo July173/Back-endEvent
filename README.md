@@ -48,6 +48,7 @@ Opcional: poblar datos base ejecutando `sql.sql` en la raíz del proyecto.
 
 - Desarrollo:
 ```bash
+mvn install
 mvn spring-boot:run
 ```
 - Producción (JAR):
@@ -111,8 +112,3 @@ Base URL: `http://localhost:8081/api/v1`
 
 Revisa `info.txt` y `sql.sql` en la raíz para ejemplos de payloads e inserts iniciales.
 
-## Troubleshooting
-
-- Error 500 en `/rolform/menu`: asegúrate de tener datos en `rol_form` y `form_module` y que las tablas coincidan con las entidades (`rolForm`, `formModule`).
-- Conexión a DB: valida `spring.datasource.*` y que la DB `control_event` exista.
-- Puerto ocupado: cambia `server.port` en `application.properties`.
