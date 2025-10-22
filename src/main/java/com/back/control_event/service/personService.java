@@ -1,6 +1,7 @@
 package com.back.control_event.service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,6 +26,7 @@ public class personService {
     private IRoleRepository roleRepository;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private static final Pattern EMAIL_REGEX = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
 
     public List<person> getAll() {
         return personRepository.findAll();
@@ -43,6 +45,15 @@ public class personService {
     }
 
     public user registerUser(RegisterDTO dto) {
+        if (dto.getEmail() == null || !EMAIL_REGEX.matcher(dto.getEmail()).matches()) {
+            throw new IllegalArgumentException("email inválido");
+        }
+        if (userRepository.findByEmail(dto.getEmail()) != null) {
+            throw new IllegalArgumentException("email ya registrado");
+        }
+        if (personRepository.existsByDocument(dto.getNumberIdentification())) {
+            throw new IllegalArgumentException("número de identificación ya registrado");
+        }
         person person = new person();
         person.setFull_name(dto.getFullName());
         person.setNumber_identification(dto.getNumberIdentification());

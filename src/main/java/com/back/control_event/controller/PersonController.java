@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.back.control_event.model.person;
 import com.back.control_event.service.personService;
+import com.back.control_event.dto.RegisterDTO;
+import com.back.control_event.model.user;
+import com.back.control_event.dto.responseDTO;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -16,9 +19,19 @@ public class PersonController {
     private personService personService;
 
     @PostMapping("/")
-    public ResponseEntity<Object> registerPerson(@RequestBody person person) {
-        person result = personService.save(person);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<Object> registerPerson(@RequestBody RegisterDTO dto) {
+        try {
+            dto.setRoleId(2); // asignar rol CLIENT por defecto
+            personService.registerUser(dto);
+            responseDTO resp = new responseDTO("ok", "person creado con éxito");
+            return new ResponseEntity<>(resp, HttpStatus.OK);
+        } catch (IllegalArgumentException ex) {
+            responseDTO resp = new responseDTO("error", ex.getMessage());
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        } catch (Exception ex) {
+            responseDTO resp = new responseDTO("error", "Error interno al registrar");
+            return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/")

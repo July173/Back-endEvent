@@ -84,6 +84,16 @@ public class eventService {
                 if (artistId == null || !artistRepository.existsById(artistId)) {
                     throw new IllegalArgumentException("artist no encontrado: id=" + artistId);
                 }
+                // Validar solapamiento de agenda del artista con el rango del evento a crear
+                Date start = incoming.getDate_start();
+                Date end = incoming.getDate_end();
+                if (start == null || end == null) {
+                    throw new IllegalArgumentException("date_start y date_end son obligatorios");
+                }
+                boolean conflict = artistEventRepository.existsArtistScheduleConflict(artistId, start, end);
+                if (conflict) {
+                    throw new IllegalArgumentException("conflicto de agenda: el artista id=" + artistId + " ya está asignado a otro evento en el mismo horario/día");
+                }
             }
         }
 
@@ -190,11 +200,20 @@ public class eventService {
             t.setEvent(saved);
             ticketRepository.save(t);
         }
-        // Validate artistIds
+        // Validate artistIds y solapamiento de agenda (excluyendo este evento)
         if (dto.getArtistIds() != null) {
             for (Integer artistId : dto.getArtistIds()) {
                 if (artistId == null || !artistRepository.existsById(artistId)) {
                     throw new IllegalArgumentException("artist no encontrado: id=" + artistId);
+                }
+                Date start = incoming.getDate_start();
+                Date end = incoming.getDate_end();
+                if (start == null || end == null) {
+                    throw new IllegalArgumentException("date_start y date_end son obligatorios");
+                }
+                boolean conflict = artistEventRepository.existsArtistScheduleConflictExcludingEvent(artistId, start, end, id);
+                if (conflict) {
+                    throw new IllegalArgumentException("conflicto de agenda: el artista id=" + artistId + " ya está asignado a otro evento en el mismo horario/día");
                 }
             }
         }

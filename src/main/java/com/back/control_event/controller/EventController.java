@@ -34,9 +34,9 @@ public class EventController {
     @PostMapping("/create")
     public ResponseEntity<Object> createEvent(@RequestBody EventCreateDTO dto) {
         try {
-            event created = eventService.createEvent(dto);
-            EventDetailDTO detail = eventService.getEventDetail(created.getId_event());
-            return new ResponseEntity<>(detail, HttpStatus.OK);
+            eventService.createEvent(dto);
+            responseDTO resp = new responseDTO("ok", "event creado con éxito");
+            return new ResponseEntity<>(resp, HttpStatus.OK);
         } catch (IllegalArgumentException ex) {
             responseDTO resp = new responseDTO("error", ex.getMessage());
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
