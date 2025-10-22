@@ -210,3 +210,14 @@ lo que le pide :
   "user": { "id_user": 1 },
   "ticket": { "id_ticket": 1 }
 }
+
+endpoint de historial get
+http://localhost:8081/api/v1/buyout/user/1
+
+para filtros puede ser 
+Filtrar por nombre de evento
+GET http://localhost:8081/api/v1/buyout/user/1?event=feria
+Filtrar por rango de fechas
+GET http://localhost:8081/api/v1/buyout/user/1?startDate=2025-10-01&endDate=2025-10-31
+Combinar filtros
+GET http://localhost:8081/api/v1/buyout/user/1?event=feria&startDate=2025-10-01&endDate=2025-10-31

@@ -14,6 +14,7 @@ import com.back.control_event.repository.IPaymentMethodRepository;
 import com.back.control_event.repository.IUserRepository;
 import com.back.control_event.model.paymentMethod;
 import com.back.control_event.model.user;
+import com.back.control_event.dto.BuyoutHistoryDTO;
 
 @Service
 public class buyoutService {
@@ -85,5 +86,9 @@ public class buyoutService {
         ticketRepository.save(t);
 
         return buyoutRepository.save(b);
+    }
+
+    public List<BuyoutHistoryDTO> getHistoryByUser(int userId, String eventName, Date startDate, Date endDate) {
+        return buyoutRepository.findHistoryByUserAndFilters(userId, eventName, startDate, endDate);
     }
 }

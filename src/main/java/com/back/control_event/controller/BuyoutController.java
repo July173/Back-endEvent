@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import com.back.control_event.model.buyout;
 import com.back.control_event.service.buyoutService;
 import com.back.control_event.dto.responseDTO;
+import com.back.control_event.dto.BuyoutHistoryDTO;
+import org.springframework.format.annotation.DateTimeFormat;
+import java.util.Date;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -41,5 +44,16 @@ public class BuyoutController {
             responseDTO resp = new responseDTO("error", "Error interno al crear buyout");
             return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Object> getHistory(
+        @PathVariable int userId,
+        @RequestParam(required = false) String event,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate
+    ) {
+        List<BuyoutHistoryDTO> history = buyoutService.getHistoryByUser(userId, event, startDate, endDate);
+        return new ResponseEntity<>(history, HttpStatus.OK);
     }
 }
