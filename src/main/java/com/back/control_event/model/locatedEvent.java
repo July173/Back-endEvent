@@ -4,9 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity(name = "locatedEvent")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class locatedEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
