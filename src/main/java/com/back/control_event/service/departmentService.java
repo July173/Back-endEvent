@@ -1,10 +1,7 @@
 package com.back.control_event.service;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.back.control_event.dto.responseDTO;
 import com.back.control_event.model.department;
 import com.back.control_event.repository.IDepartmentRepository;
