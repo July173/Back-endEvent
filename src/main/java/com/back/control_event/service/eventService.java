@@ -98,6 +98,11 @@ public class eventService {
         }
 
         event savedEvent = eventRepository.save(incoming);
+        // Asignar código autoincremental basado en el id generado
+        if (savedEvent.getCode() == 0) {
+            savedEvent.setCode(savedEvent.getId_event());
+            savedEvent = eventRepository.save(savedEvent);
+        }
         for (ticket t : dto.getTickets()) {
             if (t.getLocatedEvent() != null) {
                 int locId = t.getLocatedEvent().getId_located_event();
