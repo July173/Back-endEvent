@@ -20,6 +20,12 @@ public class municipioService {
     }
 
     public municipio save(municipio municipio) {
+        if (municipio.getLatitude() == null) {
+            throw new IllegalArgumentException("latitude es obligatoria");
+        }
+        if (municipio.getLongitude() == null) {
+            throw new IllegalArgumentException("longitude es obligatoria");
+        }
         return municipioRepository.save(municipio);
     }
 

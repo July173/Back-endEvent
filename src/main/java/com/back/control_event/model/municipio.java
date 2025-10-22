@@ -34,13 +34,21 @@ public class municipio {
     @JoinColumn(name = "id_department", nullable = false)
     private department department;
 
-    public municipio(String code, department department, String description, int id_municipio, String name, int status) {
+    @Column(name = "latitude", nullable = false)
+    private Double latitude;
+
+    @Column(name = "longitude", nullable = false)
+    private Double longitude;
+
+    public municipio(String code, department department, String description, int id_municipio, String name, int status, Double latitude, Double longitude) {
         this.code = code;
         this.department = department;
         this.description = description;
         this.id_municipio = id_municipio;
         this.name = name;
         this.status = status;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
     
     public int getId_municipio() {
@@ -90,6 +98,22 @@ public class municipio {
 
     public void setDepartment(department department) {
         this.department = department;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public municipio() {

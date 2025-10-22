@@ -26,6 +26,12 @@ public class department {
     @Column(name = "status", nullable = false)
     private int status;
 
+    @Column(name = "latitude", nullable = false)
+    private Double latitude;
+
+    @Column(name = "longitude", nullable = false)
+    private Double longitude;
+
     public int getId_department() {
         return id_department;
     }
@@ -65,12 +71,30 @@ public class department {
         this.status = status;
     }
 
-    public department(int id_department, String name, String description, String code, int status) {
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public department(int id_department, String name, String description, String code, int status, Double latitude, Double longitude) {
         this.id_department = id_department;
         this.name = name;
         this.description = description;
         this.code = code;
         this.status = status;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
   

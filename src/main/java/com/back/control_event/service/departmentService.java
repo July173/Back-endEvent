@@ -41,6 +41,18 @@ public class departmentService {
                     "La descripción no puede estar vacía");
         }
 
+        // Validar latitud y longitud obligatorias
+        if (department.getLatitude() == null) {
+            return new responseDTO(
+                "Error",
+                "La latitude es obligatoria");
+        }
+        if (department.getLongitude() == null) {
+            return new responseDTO(
+                "Error",
+                "La longitude es obligatoria");
+        }
+
       
 
         // Si todas las validaciones pasan, guardar el departamento

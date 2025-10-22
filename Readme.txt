@@ -89,3 +89,11 @@ recibe:
   "email": "juan@example.com",
   "password": "Secreto123"
 }
+
+Crear método de pago
+POST http://localhost:8081/api/v1/payment-method/
+json
+{
+  "type": "TARJETA",
+  "description": "Pago con tarjeta crédito"
+}
