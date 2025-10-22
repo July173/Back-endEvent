@@ -26,4 +26,12 @@ public class artistService {
     public artist update(artist artist) {
         return artistRepository.save(artist);
     }
+
+    public void setArtistStatus(int id, int status) {
+        artist a = artistRepository.findById(id).orElse(null);
+        if (a != null) {
+            a.setStatus(status);
+            artistRepository.save(a);
+        }
+    }
 }

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import com.back.control_event.model.person;
 import com.back.control_event.service.personService;
 import com.back.control_event.dto.RegisterDTO;
-import com.back.control_event.model.user;
 import com.back.control_event.dto.responseDTO;
 
 @RestController

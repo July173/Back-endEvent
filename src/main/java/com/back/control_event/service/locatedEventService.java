@@ -26,4 +26,8 @@ public class locatedEventService {
     public locatedEvent update(locatedEvent locatedEvent) {
         return locatedEventRepository.save(locatedEvent);
     }
+
+    public void deleteById(int id) {
+        locatedEventRepository.deleteById(id);
+    }
 }
