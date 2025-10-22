@@ -67,3 +67,25 @@ event
 }
 
 http://localhost:8081/api/v1/event/
+
+
+registro:
+
+endpoint: http://localhost:8081/api/v1/person/
+recibe:
+{
+  "fullName": "Juan Pérez",
+  "numberIdentification": 12345678,
+  "typeIdentification": "CC",
+  "email": "juan@example.com",
+  "password": "Secreto123"
+}
+
+login :
+
+endpoint: http://localhost:8081/api/v1/auth/login
+recibe:
+{
+  "email": "juan@example.com",
+  "password": "Secreto123"
+}
