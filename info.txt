@@ -188,4 +188,4 @@ Devuelve EventDetailDTO con event, tickets, artists.
 
 Actualizar evento: PUT /api/v1/event/{id}
 Body: EventCreateDTO (mismas validaciones que create)
-Cambiar estado: 
+Cambiar estado:  PATCH /api/v1/event/{id}/status?status=1|0
