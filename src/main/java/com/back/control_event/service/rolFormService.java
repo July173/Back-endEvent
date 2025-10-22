@@ -10,6 +10,8 @@ import com.back.control_event.model.rolForm;
 import com.back.control_event.model.form;
 import com.back.control_event.model.module;
 import com.back.control_event.repository.IRolFormRepository;
+import com.back.control_event.repository.IFormModuleRepository;
+import com.back.control_event.model.formModule;
 import com.back.control_event.dto.MenuDTO;
 import com.back.control_event.dto.FormDTO;
 
@@ -17,6 +19,8 @@ import com.back.control_event.dto.FormDTO;
 public class rolFormService {
     @Autowired
     private IRolFormRepository rolFormRepository;
+    @Autowired
+    private IFormModuleRepository formModuleRepository;
 
     public List<rolForm> getAll() {
         return rolFormRepository.findAll();
@@ -40,7 +44,11 @@ public class rolFormService {
 
         for (rolForm rf : rolForms) {
             form f = rf.getForm();
-            module m = f.getModule(); 
+            formModule fm = formModuleRepository.findByFormId(f.getId_form());
+            module m = (fm != null) ? fm.getModule() : null;
+            if (m == null) {
+                continue;
+            }
             moduleFormsMap.computeIfAbsent(m, k -> new ArrayList<>()).add(f);
         }
 

@@ -65,3 +65,37 @@ INSERT INTO located_event (id, name, description, code, status)
 VALUES
   (1, 'Gradería A', 'Zona gradería A', 'LOC-001', 1),
   (2, 'Palco VIP', 'Zona palco VIP', 'LOC-002', 1);
+
+  -- Módulos
+INSERT INTO module (name, description) VALUES
+  ('Gestion de eventos', 'Módulo de gestión de eventos'),
+  ('Gestion de artistas', 'Módulo de gestión de artistas'),
+  ('Información', 'Módulo de información');
+
+-- Forms
+INSERT INTO form (name, description, path) VALUES
+  ('Gestion eventos', 'Gestión de eventos', '/admin/events'),
+  ('Localidad eventos', 'Localidad de eventos', '/admin/localities'),
+  ('Artistas', 'Gestión de artistas', '/admin/artists'),
+  ('Historial compras', 'Historial de compras del usuario', '/user/events'),
+  ('Eventos', 'Eventos del usuario', '/user/history');
+
+-- Relación módulo ↔ form (formModule)
+INSERT INTO form_module (id_form, id_module) VALUES
+  -- Módulo 1: Gestión de eventos
+  (1, 1),  -- Gestion eventos -> Gestión de eventos
+  (2, 1),  -- Localidad eventos -> Gestión de eventos
+
+  -- Módulo 2: Gestión de artistas
+  (3, 2),  -- Artistas -> Gestión de artistas
+
+  -- Módulo 3: Información
+  (4, 3),  -- Historial compras -> Información
+  (5, 3);  -- Eventos -> Información
+
+-- Asociación de roles con forms (rolForm)
+-- Rol 1: forms de módulos 1 y 2 (3 forms)
+INSERT INTO rol_form (id_role, id_form) VALUES
+  (1, 1), -- Gestion eventos
+  (1, 2), -- Localidad eventos
+  (1, 3); -- Artistas
