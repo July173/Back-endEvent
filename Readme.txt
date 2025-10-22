@@ -127,3 +127,36 @@ lo que me devuleve el back
         ]
     }
 ]
+
+para traer la info del perfil
+endpoint http://localhost:8081/api/v1/user/{id}
+trae:
+{
+    "id_user": 1,
+    "email": "juan@example.com",
+    "password": "$2a$10$5dpMMkB/cgQa4HPwvrcExObwSMka0ciKFam5LArdbQYsCDOOSshnC",
+    "person": {
+        "id_person": 1,
+        "full_name": "Juan Pérez",
+        "number_identification": 12345678,
+        "type_identification": "CC"
+    },
+    "role": {
+        "id_role": 2,
+        "name": "CLIENT",
+        "description": "Client role"
+    }
+}
+
+y para el patch editar perfil 
+endpoint http://localhost:8081/api/v1/user/{id}
+recibe:
+{
+  "email": "nuevo@example.com",
+  "password": "NuevoPass123",
+  "person": {
+    "full_name": "Juan Pérez",
+    "number_identification": 12345678,
+    "type_identification": "CC"
+  }
+}
