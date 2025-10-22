@@ -97,3 +97,7 @@ json
   "type": "TARJETA",
   "description": "Pago con tarjeta crédito"
 }
+
+el menu dbe enviar
+http://localhost:8081/api/v1/rolform/menu?roleId=2
+el rol segun que tenga vinculado en user 

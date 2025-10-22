@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.back.control_event.model.rolForm;
 import com.back.control_event.service.rolFormService;
+import com.back.control_event.dto.MenuDTO;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -31,5 +32,11 @@ public class RolFormController {
     public ResponseEntity<Object> findById(@PathVariable int id) {
         rolForm rolForm = rolFormService.getById(id);
         return new ResponseEntity<>(rolForm, HttpStatus.OK);
+    }
+
+    @GetMapping("/menu")
+    public ResponseEntity<Object> getMenuByRole(@RequestParam int roleId) {
+        List<MenuDTO> menu = rolFormService.getMenuByRole(roleId);
+        return new ResponseEntity<>(menu, HttpStatus.OK);
     }
 }
