@@ -76,4 +76,12 @@ public class personService {
         }
         return false;
     }
+
+    public Integer authenticate(LoginDTO dto) {
+        user user = userRepository.findByEmail(dto.getEmail());
+        if (user != null && passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+            return user.getId_user();
+        }
+        return null;
+    }
 }

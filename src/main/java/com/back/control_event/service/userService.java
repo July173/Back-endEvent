@@ -7,6 +7,7 @@ import com.back.control_event.model.user;
 import com.back.control_event.model.person;
 import com.back.control_event.repository.IUserRepository;
 import com.back.control_event.repository.IPersonRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 public class userService {
@@ -14,6 +15,7 @@ public class userService {
     private IUserRepository userRepository;
     @Autowired
     private IPersonRepository personRepository;
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public List<user> getAll() {
         return userRepository.findAll();
@@ -38,8 +40,13 @@ public class userService {
         if (payload.getEmail() != null) {
             existing.setEmail(payload.getEmail());
         }
-        if (payload.getPassword() != null) {
-            existing.setPassword(payload.getPassword());
+        if (payload.getPassword() != null && !payload.getPassword().isBlank()) {
+            String raw = payload.getPassword();
+            // Evitar doble hash si ya viene en formato BCrypt
+            if (!(raw.startsWith("$2a$") || raw.startsWith("$2b$") || raw.startsWith("$2y$"))) {
+                raw = passwordEncoder.encode(raw);
+            }
+            existing.setPassword(raw);
         }
 
         if (payload.getPerson() != null) {

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.back.control_event.dto.LoginDTO;
 import com.back.control_event.dto.responseDTO;
 import com.back.control_event.service.personService;
+import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -23,9 +25,11 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginDTO dto) {
-        boolean ok = personService.login(dto);
-        if (ok) {
-            return new ResponseEntity<>(new responseDTO("ok", "login correcto"), HttpStatus.OK);
+        Integer idUser = personService.authenticate(dto);
+        if (idUser != null) {
+            Map<String, Object> body = new HashMap<>();
+            body.put("id_user", idUser);
+            return new ResponseEntity<>(body, HttpStatus.OK);
         }
         return new ResponseEntity<>(new responseDTO("error", "credenciales inválidas"), HttpStatus.UNAUTHORIZED);
     }
